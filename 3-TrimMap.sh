@@ -29,8 +29,8 @@ ls6_launcher_creator.py -j map -n map -a IBN21018 -e dmflores@utexas.edu -t 02:0
 sbatch map.slurm
 
 # all of this is to assign read numbers and alignment rates to each samples
-grep 'overall alignment rate' map.e3374625 > align_rates
-grep 'reads; of these:' map.e3374625 > read_num
+grep 'overall alignment rate' map.e3374949 > align_rates
+grep 'reads; of these:' map.e3374949 > read_num
 
 
 conda create -n seqkit -c bioconda -c conda-forge seqkit
