@@ -3,10 +3,15 @@ conda activate bcftools
 # what does site depth look like ?
 bcftools query -f '%INFO/DP\n' vcf/7x11_family.vcf | \
   sort -n | awk '{a[NR]=$1} END{print "min",a[1]; print "median",a[int(NR/2)]; print "max",a[NR]}'
+###min 1
+###median 4
+###max 1594
+
 
 # Stage 1: biallelic SNPs (structural — same at any depth)
-bcftools norm -f $GENOME_FASTA -m -any vcf/7x11_family.vcf \
-  | bcftools view -m2 -M2 -v snps -Oz -o vcf/7x11_biallelic.vcf.gz
+export GENOME_FASTA=$SCRATCH/OfavGenome/GCF_002042975.1_ofav_dov_v1_genomic.fna
+
+bcftools norm -f $GENOME_FASTA -m -any vcf/7x11_family.vcf | bcftools view -m2 -M2 -v snps -Oz -o vcf/7x11_biallelic.vcf.gz
 bcftools index vcf/7x11_biallelic.vcf.gz
 bcftools view -H vcf/7x11_biallelic.vcf.gz | wc -l
 
@@ -16,3 +21,7 @@ bcftools view vcf/7x11_biallelic.vcf.gz \
   -Oz -o vcf/7x11_filtered.vcf.gz
 bcftools index vcf/7x11_filtered.vcf.gz
 bcftools view -H vcf/7x11_filtered.vcf.gz | wc -l
+
+# Download vcf to local 
+# from your local machine:
+scp dmflores@ls6.tacc.utexas.edu:/scratch/08717/dmflores/ofav-wgs/vcf/7x11_filtered.vcf.gz .
